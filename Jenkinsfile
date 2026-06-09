@@ -40,35 +40,36 @@ pipeline {
                 }
             }
         }
+       stage('Update GitOps Repo') {
+    steps {
+        withCredentials([
+            usernamePassword(
+                credentialsId: 'github-creds',
+                usernameVariable: 'GIT_USER',
+                passwordVariable: 'GIT_TOKEN'
+            )
+        ]) {
+            sh """
+            rm -rf gitops
 
-        stage('Update GitOps Repo') {
-            steps {
-                withCredentials([
-                    usernamePassword(
-                        credentialsId: 'github-creds',
-                        usernameVariable: 'GIT_USER',
-                        passwordVariable: 'GIT_TOKEN'
-                    )
-                ]) {
-                    sh """
-                    rm -rf gitops
+            git clone https://\$GIT_USER:\$GIT_TOKEN@github.com/Bmanasa-2015/Gitops-argocd--cicdpiepline.git gitops
 
-                    git clone https://\$GIT_USER:\$GIT_TOKEN@github.com/Bmanasa-2015/Gitops-argocd-cicdpiepline.git gitops
+            cd gitops
 
-                    cd gitops
+            git config user.email "jenkins@example.com"
+            git config user.name "Jenkins"
 
-                    sed -i 's|image: .*|image: ${IMAGE_NAME}:${IMAGE_TAG}|g' deployment.yaml
+            sed -i 's|image: .*|image: ${IMAGE_NAME}:${IMAGE_TAG}|g' k8s/deployment.yaml
 
-                    # git config user.email "jenkins@example.com"
-                    # git config user.name "Jenkins"
+            git add k8s/deployment.yaml
 
-                    git add deployment.yaml
-                    git commit -m "Update image tag to ${IMAGE_TAG}" || true
+            git commit -m "Update image tag to ${IMAGE_TAG}" || true
 
-                    git push origin main
-                    """
-                }
-            }
+            git push origin main
+            """
         }
+    }
+}
+  
     }
 }
