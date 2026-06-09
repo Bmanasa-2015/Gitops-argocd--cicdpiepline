@@ -4,7 +4,7 @@ pipeline {
     environment {
         IMAGE_NAME = "manasabolla/flask-app"
         IMAGE_TAG = "${BUILD_NUMBER}"
-        GITOPS_REPO = "https://github.com/Bmanasa-2015/Gitops-argocd-cicdpiepline.git"
+        GITOPS_REPO = "https://github.com/Bmanasa-2015/Gitops-argocd--cicdpiepline.git"
     }
 
     stages {
@@ -12,7 +12,7 @@ pipeline {
         stage('Checkout App Code') {
             steps {
                 git branch: 'main',
-                    url: 'https://github.com/Bmanasa-2015/Gitops-argocd-cicdpiepline.git.git'
+                    url: 'https://github.com/Bmanasa-2015/Gitops-argocd--cicdpiepline.git'
             }
         }
 
