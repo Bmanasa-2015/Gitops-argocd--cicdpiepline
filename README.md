@@ -1,4 +1,4 @@
-# Gitops-argocd--cicdpiepline
+
 # GitOps CI/CD Pipeline with Jenkins, Docker, Kubernetes and ArgoCD
 
 ## Project Overview
